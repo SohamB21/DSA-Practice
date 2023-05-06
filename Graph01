@@ -1,4 +1,6 @@
 //This code creates an adjacency list representation of a graph and prints it.
+// T.C. = O(E)		S.C. = O(|V| + |E|)
+
 import java.util.*;
 import java.util.ArrayList;
 class Graph01 {
