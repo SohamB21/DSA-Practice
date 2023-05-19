@@ -1,0 +1,35 @@
+//T.C. = O(n*n)     S.C. = O(1)
+#include <stdio.h>
+
+int arr[] = {90, 10, 80, 20, 70, 30, 60, 40, 50};
+void insertionSort(int n){
+    int i, j, newCard;
+    //imagine according to card playing example
+    //loop for new cards
+    for(i=1; i<n; i++){
+        newCard = arr[i];
+        //existing cards in hand
+        for(j=i-1; j>=0; j--){
+            if(arr[j] > newCard)
+                arr[j+1] = arr[j];
+            else
+                break;
+        }
+        arr[j+1] = newCard;
+    }
+}
+int main() {
+    int i, n = sizeof(arr)/sizeof(arr[0]);
+    //printing initial array
+    printf("Initial array...\n");
+    for(i=0; i<n; i++)
+        printf("%d, ", arr[i]);
+    
+    insertionSort(n);
+    
+    //printing sorted array
+    printf("\nSorted array...\n");
+    for(i=0; i<n; i++)
+        printf("%d, ", arr[i]);
+    return 0;
+}
