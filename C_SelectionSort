@@ -1,0 +1,32 @@
+// T.C. = O(n*n)    S.C. = 0(1)
+#include <stdio.h>
+
+int arr[] = {90, 10, 80, 20, 70, 30, 60, 40, 50};
+void selectionSort(int n){
+    int i, j, smallest = -1, temp = -1;
+    for(i=0; i<n-1;i++){
+        smallest = i;
+        for(j=i+1; j<n; j++){
+            if(arr[j] < arr[smallest])
+                smallest = j;
+        }
+        temp = arr[i];
+        arr[i] = arr[smallest];
+        arr[smallest] = temp;
+    }
+}
+int main() {
+    int i, n = sizeof(arr)/sizeof(arr[0]);
+    //printing initial array
+    printf("Initial array...\n");
+    for(i=0; i<n; i++)
+        printf("%d, ", arr[i]);
+    
+    selectionSort(n);
+    
+    //printing sorted array
+    printf("\nSorted array...\n");
+    for(i=0; i<n; i++)
+        printf("%d, ", arr[i]);
+    return 0;
+}
