@@ -1,0 +1,63 @@
+// T.C. = O(n*logn)     S.C. = O(logn)
+#include <stdio.h>
+
+int arr[] = {90, 10, 80, 20, 70, 30, 60, 40, 50};
+int partition(int start, int end){
+    int i, j, temp, count = 0;
+    int pivot = arr[start];
+    
+    //counting elements lesser than pivot
+    for(i=start+1; i<=end; i++){
+        if(arr[i] < pivot)
+            count++;
+    }
+    //putting pivot at its correct position
+    int pivotIndex = start + count;
+    temp = arr[pivotIndex];
+    arr[pivotIndex] = pivot;
+    arr[start] = temp;
+    
+    //putting smaller in left, larger in right
+    i = start; j = end;
+    while(i<pivotIndex && j>pivotIndex){
+        while(arr[i] < pivot)
+            i++;
+        while(arr[j] > pivot)
+            j--;
+        //when i & j gets larger & smaller num, swap
+        if(i<pivotIndex && j>pivotIndex){
+            temp = arr[j];
+            arr[j] = arr[i];
+            arr[i] = temp;
+            i++; j--;
+        }
+    }
+    return pivotIndex;
+}
+void quickSort(int start, int end){
+    //base case
+    if(start >= end)
+        return;
+    
+    //for putting smaller in left, larger in right
+    int p = partition(start, end);
+    //left part sort
+    quickSort(0, p-1);
+    //right part sort
+    quickSort(p+1, end);
+}
+int main() {
+    int i, n = sizeof(arr)/sizeof(arr[0]);
+    //printing initial array
+    printf("Initial array...\n");
+    for(i=0; i<n; i++)
+        printf("%d, ", arr[i]);
+    
+    quickSort(0, n-1);
+    
+    //printing sorted array
+    printf("\nSorted array...\n");
+    for(i=0; i<n; i++)
+        printf("%d, ", arr[i]);
+    return 0;
+}
