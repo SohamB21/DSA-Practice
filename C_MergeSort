@@ -1,0 +1,61 @@
+// T.C. = O(n*logn)     S.C. = O(n)
+#include <stdio.h>
+
+int arr[] = {90, 10, 80, 20, 70, 30, 60, 40, 50};
+int merge(int start, int end){
+    int mid = (start + end)/2;
+    int len1 = mid-start+1, len2 = end-mid;
+    int i, arrayIndex = start;
+    
+    //new sub-arrays to store left and right part
+    int firstArr[len1], secondArr[len2];
+    //copying values of left and right part
+    for(i=0; i<len1; i++)
+        firstArr[i] = arr[arrayIndex++];
+    for(i=0; i<len2; i++)
+        secondArr[i] = arr[arrayIndex++];
+        
+    //merge both parts
+    int i1 = 0, i2 = 0;
+    arrayIndex = start;
+    while(i1<len1 && i2<len2){
+        if(firstArr[i1] < secondArr[i2])
+            arr[arrayIndex++] = firstArr[i1++];
+        else
+            arr[arrayIndex++] = secondArr[i2++];
+    }
+    
+    //if one array is longer than the other
+    while(i1 < len1)
+        arr[arrayIndex++] = firstArr[i1++];
+    while(i2 < len2)
+        arr[arrayIndex++] = secondArr[i2++];
+}
+void mergeSort(int start, int end){
+    //base case
+    if(start >= end)
+        return;
+    
+    int mid = (start + end)/2;
+    //left part sort
+    mergeSort(start, mid);
+    //right part sort
+    mergeSort(mid+1, end);
+    //merge both parts
+    merge(start, end);
+}
+int main() {
+    int i, n = sizeof(arr)/sizeof(arr[0]);
+    //printing initial array
+    printf("Initial array...\n");
+    for(i=0; i<n; i++)
+        printf("%d, ", arr[i]);
+    
+    mergeSort(0, n-1);
+    
+    //printing sorted array
+    printf("\nSorted array...\n");
+    for(i=0; i<n; i++)
+        printf("%d, ", arr[i]);
+    return 0;
+}
