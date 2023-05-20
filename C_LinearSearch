@@ -1,0 +1,29 @@
+// T.C. = O(n)     S.C. = O(1)
+#include <stdio.h>
+
+void linearSearch(int arr[], int n, int target){
+    int i, j, flag = -1;
+    for(i=0; i<n; i++){
+        if(arr[i] == target){
+            flag = i;
+            break;
+        }
+    }
+    if(flag == -1)
+        printf("'%d' not found", target);
+    else
+        printf("'%d' found at index %d", target, flag);
+}
+int main() {
+    int arr[] = {90, 10, 80, 20, 70, 30, 60, 40, 50};
+    int i, target, n = sizeof(arr)/sizeof(arr[0]);
+    //printing original array
+    printf("Original array...\n");
+    for(i=0; i<n; i++)
+        printf("%d, ", arr[i]);
+    printf("\nEnter number to be searched: ");
+    scanf("%d", &target);
+    
+    linearSearch(arr, n, target);
+    return 0;
+}
