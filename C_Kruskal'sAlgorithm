@@ -1,0 +1,91 @@
+// T.C. = O(e*log e)       S.C. = O(e)
+#include <stdio.h>
+#include <stdlib.h> 
+
+//comparison function of qsort
+int comparator(const void* p1, const void* p2)
+{
+    const int(*x)[3] = p1;
+    const int(*y)[3] = p2;
+    return (*x)[2] - (*y)[2];
+}
+
+//to initialize parent and rank array
+void initialize(int parent[], int rank[], int e){
+    for(int i=0; i<e; i++){
+        parent[i] = i;
+        rank[i] = 0;
+    }
+}
+
+//to find parent of a node
+int findParent(int parent[], int node){
+    if(parent[node] == node)
+        return node;
+    //recursive call, path compression
+    return parent[node] = findParent(parent, parent[node]);
+}
+
+//for union of two sets
+void unionSet(int u, int v, int parent[], int rank[]){
+    //finding parents of given nodes
+    u = findParent(parent, u);
+    v = findParent(parent, v);
+    
+    //union by rank
+    if(rank[u] < rank[v])
+        parent[u] = v;
+    else if(rank[u] > rank[v])
+        parent[v] = u;
+    else if(rank[u] == rank[v]){
+        parent[v] = u;
+        rank[u]++;
+    }
+}
+
+//to find Minimum Spanning Tree
+void kruskalAlgo(int e, int graph[e][3]){
+    //to sort the cost of edges in ascending order
+    qsort(graph, e, sizeof(graph[0]), comparator);
+    int minWt = 0;
+    
+    int parent[e];
+    int rank[e];
+    initialize(parent, rank, e);
+    
+    printf("Following are the edges of the MST...\n");
+    printf("u --- v => w\n");
+    for(int i=0; i<e; i++){
+        int u = findParent(parent, graph[i][0]);
+        int v = findParent(parent, graph[i][1]);
+        int w = graph[i][2];
+        
+        //if u and v are of separate sets, do union
+        if(u != v){
+            unionSet(u, v, parent, rank);
+            minWt = minWt + w;
+            printf("%d --- %d => %d\n", graph[i][0], graph[i][1], graph[i][2]);
+        }
+    }
+    printf("Total cost of the MST = %d", minWt);
+}
+int main(){
+    int graph[11][3] = { {0, 1, 4}, {0, 7, 8}, 
+    {1, 2, 8}, {2, 3, 7}, {2, 8, 2}, {3, 4, 9}, {4, 5, 10},
+    {5, 6, 2}, {6, 8, 6}, {6, 7, 1}, {7, 8, 7} };
+    kruskalAlgo(11, graph);
+    
+    return 0;
+}
+
+// Following are the edges of the MST...
+// u --- v => w
+// 6 --- 7 => 1
+// 2 --- 8 => 2
+// 5 --- 6 => 2
+// 0 --- 1 => 4
+// 6 --- 8 => 6
+// 2 --- 3 => 7
+// 0 --- 7 => 8
+// 3 --- 4 => 9
+// Total cost of the MST = 39
