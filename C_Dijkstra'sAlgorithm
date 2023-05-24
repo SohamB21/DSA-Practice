@@ -1,0 +1,79 @@
+// T.C. = O(v*v)       S.C. = O(v)
+#include <stdio.h>
+#include <stdbool.h>
+#include <limits.h>
+
+//to initialize dist and spt array
+void initialize(int dist[], bool spt[], int v){
+    for(int i=0; i<v; i++){
+        dist[i] = INT_MAX;
+        spt[i] = false;
+    }
+}
+//to find vertex with min dist value, not included in SPT
+int minDist(int dist[], bool spt[], int v){
+    int minIndex, minVal = INT_MAX;
+    for(int i=0; i<v; i++){
+        if(spt[i] == false && dist[i] < minVal){
+            minVal = dist[i];
+            minIndex = i;
+        }
+    }
+    return minIndex;
+}
+//to find Shortest Path Tree using Prim's
+void dijkstraAlgo(int src, int v, int graph[v][v]){
+    //to store the shortest distance from src
+    int dist[v];
+    //to track whether the nodes are added in SPT or not
+    bool spt[v];
+    
+    initialize(dist, spt, v);
+    //distance of src to src is always 0
+    dist[src] = 0;
+    
+    for(int i=0; i<v; i++){
+        //to pick the min distance vertex in each cut
+        int u = minDist(dist, spt, v);
+        //to include the picked vertex in SPT
+        spt[u] = true;
+        
+        //update dist value of neighbours of u
+        for(int nbr=0; nbr<v; nbr++){
+            //non-zero adjacent nodes in adj matrix = nbr
+            //nbr must not be already included in SPT
+            //dijkstra statement, total dist of src->v
+            //through u is < dist[v], then update
+            if(graph[u][nbr] != 0 && spt[nbr] == false && 
+                dist[u] + graph[u][nbr] < dist[nbr]){
+                    dist[nbr] = dist[u] + graph[u][nbr];
+            }
+        }
+    }
+    //print SPT
+    printf("Shortest distance from source...\n");
+    printf("Source - Destination => Distance\n");
+    for(int i=0; i<v; i++){
+        int d = dist[i];
+        printf("%d \t --- \t %d \t\t => \t %d\n", src, i, d);
+    }
+}
+int main(){
+    int graph[5][5] = { { 0, 4, 1, 0, 0 },
+                        { 4, 0, 1, 1, 0 },
+                        { 1, 1, 0, 5, 6 },
+                        { 0, 1, 5, 0, 1 },
+                        { 0, 3, 6, 1, 0 } };
+    int src = 0, v = 5;
+    dijkstraAlgo(src, v, graph);
+    
+    return 0;
+}
+
+// Shortest distance from source...
+// Source - Destination => Distance
+// 1 	 --- 	 0 		 => 	 2
+// 1 	 --- 	 1 		 => 	 0
+// 1 	 --- 	 2 		 => 	 1
+// 1 	 --- 	 3 		 => 	 1
+// 1 	 --- 	 4 		 => 	 2
