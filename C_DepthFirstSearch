@@ -1,0 +1,33 @@
+// T.C. = O(V + E)      S.C. = 0(V)
+#include <stdio.h>
+
+int visited[7] = {0,0,0,0,0,0,0};
+int graph[7][7] = {
+        {0,1,1,1,0,0,0},
+        {1,0,0,0,0,0,0},
+        {1,0,0,0,0,1,1},
+        {1,0,0,0,0,0,1},
+        {0,0,0,0,0,0,1},
+        {0,0,1,0,0,0,0}, 
+        {0,0,1,1,1,0,0} };
+        
+void DFS(int node){
+    //DFS Implementation
+	printf("%d ", node);
+	visited[node] = 1;
+	//to get neighbours of node
+	for(int nbr=0; nbr<7; nbr++){
+		if(graph[node][nbr] == 1 && !visited[nbr])
+			DFS(nbr);
+	}
+}
+int main(){
+    printf("The DFS of the graph is...\n");
+    int startingNode = 0;
+    //function to implement DFS
+	DFS(startingNode);
+	return 0;
+}
+
+// The DFS of the graph is...
+// 0 1 2 5 6 3 4 
