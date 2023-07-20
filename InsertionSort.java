@@ -1,3 +1,4 @@
+// T.C. = O(size^2)        S.C. = O(1)
 import java.util.*;
 public class InsertionSort{
     public static void insertionSort(int arr[], int size) {
