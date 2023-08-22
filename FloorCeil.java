@@ -1,3 +1,5 @@
+// T.C. = O(n*logn)        S.C. = O(1)
+
 import java.util.* ;
 import java.io.*; 
 public class FloorCeil {
